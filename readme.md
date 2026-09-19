@@ -152,6 +152,7 @@ Gradient_boosting_Regression/
 * Learned why one hot coding useful in multi class datasets.
 * Learned how softmax useful in classifications.
 * Learned how to evaluated the classification model.
+* Learned tree prediction will be float in gradient boosting classification. 
 * Learned to get higher effieciency dataset also should be good with algorithm.
 
 
