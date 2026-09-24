@@ -133,7 +133,7 @@ F1 Score: 1.0
 ## Folder Structure
 
 ```text
-Gradient_boosting_Regression/
+Gradient_boosting_Classification/
 │
 ├── plots/
 │   ├── confusion_matrix.png
