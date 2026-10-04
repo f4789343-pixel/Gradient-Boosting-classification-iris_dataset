@@ -1,0 +1,15 @@
+[build-system]
+
+requires = ['setuptools']
+build-backend = 'setuptools.build_meta'
+
+['tools.setuptools.packages.find']
+where = ['src']
+
+[project]
+name = 'Gradient-boosting-iris_dataset'
+version = '0.1.0'
+dependencies = ['matplotlib==3.11.0',
+'numpy==2.4.6',
+'pandas==3.0.3',
+'scikit-learn==1.8.0']

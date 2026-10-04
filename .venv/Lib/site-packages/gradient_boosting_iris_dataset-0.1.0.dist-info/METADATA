@@ -1,0 +1,7 @@
+Metadata-Version: 2.4
+Name: Gradient-boosting-iris_dataset
+Version: 0.1.0
+Requires-Dist: matplotlib==3.11.0
+Requires-Dist: numpy==2.4.6
+Requires-Dist: pandas==3.0.3
+Requires-Dist: scikit-learn==1.8.0
