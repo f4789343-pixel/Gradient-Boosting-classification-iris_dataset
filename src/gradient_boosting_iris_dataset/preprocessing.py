@@ -2,6 +2,10 @@ from sklearn.datasets import load_iris
 import pandas as pd
 import numpy as np
 import logging
+from gradient_boosting_iris_dataset import logging_config
+
+logger = logging.getLogger(__name__)
+logger.info('Preprocessing started')
 
 def preprocessing():
   iris = load_iris()
