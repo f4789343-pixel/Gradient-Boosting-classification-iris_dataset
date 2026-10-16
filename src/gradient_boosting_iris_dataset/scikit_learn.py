@@ -3,6 +3,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.metrics import accuracy_score,confusion_matrix,f1_score,precision_score,recall_score
 import pandas as pd
+import numpy as np
+import joblib
 
 iris = load_iris()
 
@@ -16,6 +18,7 @@ x_train,x_test,y_train,y_test = train_test_split(X,y,test_size=0.2,random_state=
 
 model = GradientBoostingClassifier(n_estimators=10,learning_rate=0.1,max_depth=5,random_state=42)
 model.fit(x_train,y_train)
+joblib.dump(model,filename='Gradient_boosting_iris.joblib')
 predictions = model.predict(x_test)
 accuracy = accuracy_score(y_test,predictions)
 
@@ -24,10 +27,14 @@ precision = precision_score(y_test, predictions, average='macro')
 recall = recall_score(y_test, predictions, average='macro')
 f1 = f1_score(y_test, predictions, average='macro')
 
-print('scikit Accuracy:', accuracy)
+print('scikit Accuracy:', accuracy*100)
 print('Confusion Metrix:', cm)
 print('Precision:', precision)
 print('Recall:', recall)
 print('F1 Score:', f1)
 
+print(df.columns)
+print(df.info())
+print(df['sepal width (cm)'].max())
+print(df['petal width (cm)'].min())
 

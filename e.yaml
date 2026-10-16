@@ -1,0 +1,7 @@
+[33mc1c40d2[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mimproved-structure[m[33m)[m Add FastAPI prediction endpoint
+[33m686cb5d[m[33m ([m[1;31morigin/improved-structure[m[33m)[m Added logging file and tests folder
+[33m2cf26a3[m modified the folder structure
+[33m4ef4a08[m[33m ([m[1;31morigin/main[m[33m, [m[1;32mmain[m[33m)[m Added readme
+[33m41ae90c[m Added visualization
+[33mc7eaf47[m Added model evalution for gradient boosting classification and compared it scores with scikit learn library model
+[33mf638cb3[m Implementing iris prediction model using gradient boosting classification from scratch
