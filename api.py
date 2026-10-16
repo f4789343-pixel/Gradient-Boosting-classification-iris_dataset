@@ -8,21 +8,27 @@ import psycopg
 import os
 
 load_dotenv()
-password = os.getenv('password') or os.getenv('POSTGRESS_PASSWORD')
-db_host = os.getenv('DB_HOST','localhost')
-db_port = int(os.getenv('DB_PORT', "5432"))
-model = joblib.load(filename='Gradient_boosting_iris.joblib')
+password = os.getenv("POSTGRES_PASSWORD") or os.getenv("password")
+db_host = os.getenv("DB_HOST", "localhost")
+db_port = int(os.getenv("DB_PORT", "5432"))
+db_name = os.getenv("DB_NAME", "iris_gr")
+db_user = os.getenv("DB_USER", "postgres")
+ssl_mode = os.getenv("DB_SSLMODE", "prefer")
+model = joblib.load(filename="Gradient_boosting_iris.joblib")
 
 class InputData(BaseModel):
    sepal_length: float=Field(ge=4.3,le=7.9)
    sepal_width: float=Field(ge=2.0,le=4.4)
    petal_length: float=Field(ge=0.1,le=7.9)
    petal_width: float=Field(ge=0.1,le=4.4)
-pool = ConnectionPool(f'host={db_host} ' 
-                      f'port={db_port} ' 
-                      'dbname=iris_gr '
-                      'user=postgres ' 
-                      f'password={password}')
+pool = ConnectionPool(
+    f"host={db_host} "
+    f"port={db_port} "
+    f"dbname={db_name} "
+    f"user={db_user} "
+    f"password={password} "
+    f"sslmode={ssl_mode}"
+)
 @asynccontextmanager
 async def lifespan(app: FastAPI):
    yield
