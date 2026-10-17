@@ -1,39 +1,43 @@
+
 name: Run Tests
 
 on:
- push:
- pull_request:
- workflow_dispatch:
+  push:
+  pull_request:
+  workflow_dispatch:
 
 jobs:
- tests:
-  runs-on: Ubuntu-latest
-  env:
+  tests:
+    runs-on: ubuntu-latest
+
+    env:
       POSTGRES_PASSWORD: postgres
       DB_HOST: localhost
       DB_PORT: "5434"
       DB_NAME: iris_gr
       DB_USER: postgres
       DB_SSLMODE: disable
-  steps:
-   - name: Checkout repository
-     uses: actions/checkout@v4
 
-   - name: Set up Python
-     uses: actions/setup-python@v5
-     with:
-      python-version: "3.11"
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-   - name: Install dependencies
-     run: |
-      python -m pip install --upgrade pip
-      pip install -r requirements.txt
-      pip install pytest
-         - name: Start PostgreSQL
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest httpx
+
+      - name: Start PostgreSQL
         run: docker compose up -d db
 
-   - name: Wait for PostgreSQL
-     run: |
+      - name: Wait for PostgreSQL
+        run: |
           for i in {1..30}; do
             if docker compose exec -T db pg_isready -U postgres -d iris_gr; then
               exit 0
@@ -43,8 +47,8 @@ jobs:
           docker compose logs db
           exit 1
 
-   - name: Create prediction history table
-     run: |
+      - name: Create prediction history table
+        run: |
           docker compose exec -T db psql -U postgres -d iris_gr -c "
           CREATE TABLE IF NOT EXISTS prediction_history (
             id SERIAL PRIMARY KEY,
@@ -56,6 +60,5 @@ jobs:
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
           );"
 
-   - name: Run tests
-     run: python -m pytest -v
-
+      - name: Run tests
+        run: python -m pytest -v
