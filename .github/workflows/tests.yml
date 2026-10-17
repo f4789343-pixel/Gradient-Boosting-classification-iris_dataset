@@ -8,7 +8,13 @@ on:
 jobs:
  tests:
   runs-on: Ubuntu-latest
-
+  env:
+      POSTGRES_PASSWORD: postgres
+      DB_HOST: localhost
+      DB_PORT: "5434"
+      DB_NAME: iris_gr
+      DB_USER: postgres
+      DB_SSLMODE: disable
   steps:
    - name: Checkout repository
      uses: actions/checkout@v4
@@ -23,6 +29,32 @@ jobs:
       python -m pip install --upgrade pip
       pip install -r requirements.txt
       pip install pytest
+         - name: Start PostgreSQL
+        run: docker compose up -d db
+
+   - name: Wait for PostgreSQL
+     run: |
+          for i in {1..30}; do
+            if docker compose exec -T db pg_isready -U postgres -d iris_gr; then
+              exit 0
+            fi
+            sleep 2
+          done
+          docker compose logs db
+          exit 1
+
+   - name: Create prediction history table
+     run: |
+          docker compose exec -T db psql -U postgres -d iris_gr -c "
+          CREATE TABLE IF NOT EXISTS prediction_history (
+            id SERIAL PRIMARY KEY,
+            sepal_length FLOAT NOT NULL,
+            sepal_width FLOAT NOT NULL,
+            petal_length FLOAT NOT NULL,
+            petal_width FLOAT NOT NULL,
+            prediction INTEGER NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+          );"
 
    - name: Run tests
      run: python -m pytest -v
